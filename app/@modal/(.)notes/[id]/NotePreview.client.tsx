@@ -19,16 +19,18 @@ export default function NotePreview() {
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-
-  if (error || !data) return <p>Something went wrong.</p>;
-
   return (
     <Modal onClose={close}>
-      {isLoading && <p>Loading, please wait...</p>}
-      {(error || !data) && <p>Something went wrong.</p>}
-      {data && (
-        <div className={css.container}>
+      <div className={css.container}>
+        <button type="button" className={css.backBtn} onClick={close}>
+          Close
+        </button>
+
+        {isLoading && <p>Loading, please wait...</p>}
+
+        {(error || !data) && !isLoading && <p>Something went wrong.</p>}
+
+        {data && !isLoading && !error && (
           <div className={css.item}>
             <div className={css.header}>
               <h2>{data.title}</h2>
@@ -37,8 +39,8 @@ export default function NotePreview() {
             <p className={css.content}>{data.content}</p>
             <p className={css.date}>{data.createdAt}</p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </Modal>
   );
 }

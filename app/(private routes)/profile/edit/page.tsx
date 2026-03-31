@@ -6,9 +6,11 @@ import css from "./EditProfilePage.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { User } from "@/types/user";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function EditProfilePage() {
   const router = useRouter();
+  const setAuthUser = useAuthStore((state) => state.setUser);
 
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState("");
@@ -27,10 +29,11 @@ export default function EditProfilePage() {
     setUsername(event.target.value);
   };
 
-  const handleSaveUser = async (event: React.SyntheticEvent) => {
+  const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await updateMe({ username });
+    const updatedUser = await updateMe({ username });
+    setAuthUser(updatedUser);
     router.push("/profile");
   };
 

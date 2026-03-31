@@ -11,7 +11,7 @@ export async function checkSession() {
       Cookie: cookieStore.toString(),
     },
   });
-  return response.data.success;
+  return response;
 }
 
 export async function getMe(): Promise<User> {
