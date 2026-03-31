@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { fetchNotes } from "@/lib/api";
+
 import NoteList from "@/components/NoteList/NoteList";
 import css from "./NotesPage.module.css";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import { useDebouncedCallback } from "use-debounce";
 import NoResults from "@/components/NoResults/NoResults";
 import { NoteTag } from "@/types/note";
 import Link from "next/link";
+import { fetchNotes } from "@/lib/api/clientApi";
 
 interface NotesClientProps {
   category?: NoteTag;

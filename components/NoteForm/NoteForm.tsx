@@ -3,11 +3,12 @@
 import css from "./NoteForm.module.css";
 import { noteTags, type NoteTag } from "../../types/note";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "@/lib/api";
+
 import * as Yup from "yup";
 import { useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useNoteDraftStore } from "@/lib/store/noteStore";
+import { createNote } from "@/lib/api/clientApi";
 
 interface NoteFormValues {
   title: string;
