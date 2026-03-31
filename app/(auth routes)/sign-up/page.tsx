@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import css from "./SignUpPage.module.css";
 import { useState } from "react";
-import { register, RegisterRequest } from "@/lib/api/clientApi";
+import { getMe, register, RegisterRequest } from "@/lib/api/clientApi";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/lib/store/authStore";
 
 type ErrorResponse = {
   error?: string;
@@ -14,6 +15,7 @@ type ErrorResponse = {
 export default function SignUpPage() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const { setUser } = useAuthStore();
 
   const handleSubmit = async (formData: FormData) => {
     setError("");
@@ -24,7 +26,11 @@ export default function SignUpPage() {
       ) as RegisterRequest;
 
       await register(formValues);
-      router.push("/profile");
+
+      const user = await getMe();
+      setUser(user);
+
+      router.replace("/profile");
     } catch (error) {
       const axiosError = error as AxiosError<ErrorResponse>;
 

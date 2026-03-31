@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import css from "./SignInPage.module.css";
 import { useState } from "react";
-import { login, LoginRequest } from "@/lib/api/clientApi";
+import { getMe, login, LoginRequest } from "@/lib/api/clientApi";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/lib/store/authStore";
 
 type ErrorResponse = {
   error?: string;
@@ -13,6 +14,7 @@ type ErrorResponse = {
 
 export default function SignInPage() {
   const router = useRouter();
+  const { setUser } = useAuthStore();
   const [error, setError] = useState("");
 
   const handleSubmit = async (formData: FormData) => {
@@ -22,7 +24,11 @@ export default function SignInPage() {
       const formValues = Object.fromEntries(formData.entries()) as LoginRequest;
 
       await login(formValues);
-      router.push("/profile");
+
+      const user = await getMe();
+      setUser(user);
+
+      router.replace("/profile");
     } catch (error) {
       const axiosError = error as AxiosError<ErrorResponse>;
 
