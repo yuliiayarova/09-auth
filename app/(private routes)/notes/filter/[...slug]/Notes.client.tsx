@@ -31,13 +31,10 @@ export default function NotesClient({ category }: NotesClientProps) {
   });
   if (isError) throw error;
 
-  const updateSearchQuery = useDebouncedCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(event.target.value);
-      setPage(1);
-    },
-    400,
-  );
+  const updateSearchQuery = useDebouncedCallback((value: string) => {
+    setSearchQuery(value);
+    setPage(1);
+  }, 400);
 
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
